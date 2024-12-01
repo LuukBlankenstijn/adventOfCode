@@ -1,5 +1,7 @@
 package main
 
+import "adventOfCode/solutions"
+
 func main() {
-	println(day1())
+	println(solutions.day1())
 }
