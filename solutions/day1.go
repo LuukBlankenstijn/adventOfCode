@@ -10,16 +10,16 @@ import (
 	"strings"
 )
 
-func day1() int {
-	var col1, col2 []int = parseInput()
+func Day1() (int, int) {
+	var col1, col2 []int = parseInputDay1()
 
-	//distance := distance(col1, col2)
+	distance := distance(col1, col2)
 	similarity := similarity(col1, col2)
 
-	return similarity
+	return similarity, distance
 }
 
-func parseInput() ([]int, []int) {
+func parseInputDay1() ([]int, []int) {
 	file, err := os.Open("input/day1.txt")
 	if err != nil {
 		log.Fatal(err)
@@ -81,7 +81,6 @@ func similarity(col1 []int, col2 []int) int {
 
 	similarity := 0
 	for i := 0; i < len(col1); i++ {
-		println(frequencyMap[col1[i]], col1[i])
 		similarity += frequencyMap[col1[i]] * col1[i]
 	}
 
