@@ -5,8 +5,8 @@ import "adventOfCode/solutions"
 func main() {
 	//println(solutions.Day1())
 	//println(solutions.Day2())
-	println(solutions.Day3())
-	//println(solutions.Day4())
+	//println(solutions.Day3())
+	println(solutions.Day4())
 	//println(solutions.Day5())
 	//println(solutions.Day6())
 	//println(solutions.Day7())
