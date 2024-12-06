@@ -2,29 +2,21 @@ package solutions
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 )
 
-type Direction int
-
-const (
-	UP Direction = iota
-	RIGHT
-	DOWN
-	LEFT
-)
+var matrix [][]rune
 
 func Day6() (int, int) {
-	matrix := parseInputDay6()
+	parseInputDay6()
 
-	return solutionDay6(matrix, true)
+	return solutionDay6()
 
 }
 
-func parseInputDay6() [][]rune {
-	file, err := os.Open("input/day6.test.txt")
+func parseInputDay6() {
+	file, err := os.Open("input/day6.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,8 +28,6 @@ func parseInputDay6() [][]rune {
 		}
 	}(file)
 
-	var matrix [][]rune
-
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -48,101 +38,92 @@ func parseInputDay6() [][]rune {
 	if err := scanner.Err(); err != nil {
 		log.Fatal(err)
 	}
-
-	return matrix
 }
 
-func solutionDay6(matrix [][]rune, part2 bool) (int, int) {
-	current_y, current_x := findStart(matrix)
-	direction := UP
-	count := 1
-	matrix[current_y][current_x] = '+'
-	next_x, next_y := current_x, current_y
-	part2Counter := 0
-	for {
-		next_y, next_x = getNextPos(next_y, next_x, direction)
-		if !pointInBound(matrix, next_y, next_x) {
+func solutionDay6() (int, int) {
+	start_row, start_col := -1, -1
+	for row, _ := range matrix {
+		for col, _ := range matrix[row] {
+			if matrix[row][col] == '^' {
+				start_row, start_col = row, col
+			}
+		}
+	}
+	if start_col == -1 {
+		log.Fatalln("No start found")
+	}
+
+	state := State{Location{y: start_row, x: start_col}, UP}
+	visitedLocations := Set[Location]{}
+	for inGrid(state) {
+		visitedLocations.Add(state.location)
+		nState := nextState(state)
+		if !inGrid(nState) {
 			break
 		}
-		if checkNewPos(matrix, next_y, next_x) {
-			if matrix[next_y][next_x] == '.' {
-				matrix[next_y][next_x] = getSymbol(direction, false)
-				count++
-			}
-			current_x = next_x
-			current_y = next_y
+		if isObstacle(nState) {
+			state.direction = nextDir(state.direction)
 		} else {
-			direction = nextDirection(direction)
-			matrix[current_y][current_x] = '+'
-			next_x, next_y = current_x, current_y
+			state = nState
 		}
 	}
 
-	return count, part2Counter
-}
-
-func findStart(matrix [][]rune) (int, int) {
-	for i, _ := range matrix {
-		for j, _ := range matrix[i] {
-			if matrix[i][j] == '^' {
-				return i, j
-			}
+	count := 0
+	for _, v := range visitedLocations.Items() {
+		matrix[v.y][v.x] = '#'
+		if isLoop(State{Location{y: start_row, x: start_col}, UP}) {
+			count++
 		}
+		matrix[v.y][v.x] = '.'
 	}
-	log.Fatal("Could not find start")
-	return -1, -1
+	return len(visitedLocations.Items()), count
 }
 
-func nextDirection(dir Direction) Direction {
+func nextState(state State) State {
+	switch state.direction {
+	case UP:
+		state.location.y--
+	case DOWN:
+		state.location.y++
+	case LEFT:
+		state.location.x--
+	case RIGHT:
+		state.location.x++
+	}
+	return state
+}
+
+func nextDir(dir Direction) Direction {
 	return (dir + 1) % 4
 }
 
-func checkNewPos(matrix [][]rune, y int, x int) bool {
-	return !(matrix[y][x] == '#')
+func isObstacle(state State) bool {
+	return matrix[state.location.y][state.location.x] == '#'
 }
 
-func pointInBound(matrix [][]rune, y int, x int) bool {
-	return !(y < 0 || y > len(matrix)-1) || (x < 0 || x > len(matrix[0])-1)
+func inGrid(state State) bool {
+	return state.location.x < len(matrix[0]) &&
+		state.location.x >= 0 &&
+		state.location.y < len(matrix) &&
+		state.location.y >= 0
 }
 
-func getNextPos(y int, x int, direction Direction) (int, int) {
-	switch direction {
-	case UP:
-		y--
-	case DOWN:
-		y++
-	case LEFT:
-		x--
-	case RIGHT:
-		x++
-	}
-	return y, x
-}
-
-func getSymbol(direction Direction, opposite bool) rune {
-	if direction == UP || direction == DOWN {
-		if opposite {
-			return '-'
+func isLoop(state State) bool {
+	visited := Set[State]{}
+	for inGrid(state) {
+		if visited.Contains(state) {
+			return true
+		}
+		visited.Add(state)
+		nState := nextState(state)
+		if !inGrid(nState) {
+			return false
+		}
+		if isObstacle(nState) {
+			state.direction = nextDir(state.direction)
 		} else {
-			return '|'
+			state = nState
 		}
 	}
-	if opposite {
-		return '|'
-	} else {
-		return '-'
-	}
-}
-
-func printGrid(matrix [][]rune) {
-	for _, row := range matrix {
-		printArray(row)
-	}
-}
-
-func printArray(array []rune) {
-	for _, value := range array {
-		fmt.Printf("%c ", value)
-	}
-	fmt.Println()
+	return false
 }
