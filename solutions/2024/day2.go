@@ -16,7 +16,7 @@ func Day2() (int, int) {
 }
 
 func parseInputDay2() [][]int {
-	file, err := os.Open("input/day2.txt")
+	file, err := os.Open("input/2024/day2.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,9 +77,6 @@ func isSave(list []int) bool {
 			return false
 		}
 		if (increasing && difference <= 0) || (!increasing && difference >= 0) {
-			if difference == 0 {
-				println(difference)
-			}
 			return false
 		}
 	}

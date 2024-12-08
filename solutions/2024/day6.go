@@ -16,7 +16,7 @@ func Day6() (int, int) {
 }
 
 func parseInputDay6() {
-	file, err := os.Open("input/day6.txt")
+	file, err := os.Open("input/2024/day6.txt")
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -14,7 +14,7 @@ var numberList []Entry
 
 func Day7() (int, int) {
 	start := time.Now()
-	parseInputDay7("input/day7.txt")
+	parseInputDay7("input/2024/day7.txt")
 
 	part1, part2 := solutionDay7()
 	elapsed := time.Since(start)
@@ -110,14 +110,6 @@ func canSolve(list []int, endValue int) (bool, bool) {
 	part2 := add2 || mul2 || con2
 
 	return part1, part2
-}
-
-func printArray(list []int) {
-	for _, value := range list {
-		print(value)
-		print(",")
-	}
-	println()
 }
 
 func concat(value1 int, value2 int) int {

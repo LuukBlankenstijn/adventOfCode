@@ -13,7 +13,7 @@ func Day4() (int, int) {
 }
 
 func parseInputDay4() [][]rune {
-	file, err := os.Open("input/day4.txt")
+	file, err := os.Open("input/2024/day4.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -111,7 +111,6 @@ func solutionDay4(matrix [][]rune, partTwo bool) int {
 
 func isXmas(word string) bool {
 	if word == "XMAS" || word == "SAMX" {
-		//println(word)
 		return true
 	}
 	return false
@@ -119,7 +118,6 @@ func isXmas(word string) bool {
 
 func isMas(word string) bool {
 	if word == "MAS" || word == "SAM" {
-		//println(word)
 		return true
 	}
 	return false

@@ -15,7 +15,7 @@ func Day5() (int, int) {
 }
 
 func parseInputDay5() (map[int][]int, [][]int) {
-	file, err := os.Open("input/day5.txt")
+	file, err := os.Open("input/2024/day5.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -115,8 +115,7 @@ func solutionDay5(mapping map[int][]int, updates [][]int, part2 bool) (int, int)
 			}
 		}
 		if len(update) != len(newUpdate) {
-			println("invalid length")
-			os.Exit(-1)
+			log.Fatal("invalid length")
 		}
 		totalPart2 += getMiddle(newUpdate)
 	}
