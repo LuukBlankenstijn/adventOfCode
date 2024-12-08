@@ -1,6 +1,8 @@
 package main
 
-import "adventOfCode/solutions"
+import (
+	"adventOfCode/solutions/2024"
+)
 
 func main() {
 	//println(solutions.Day1())
@@ -10,7 +12,7 @@ func main() {
 	//println(solutions.Day5())
 	//println(solutions.Day6())
 	//println(solutions.Day7())
-	println(solutions.Day8())
+	println(_024.Day8())
 	//println(solutions.Day9())
 	//println(solutions.Day10())
 	//println(solutions.Day11())

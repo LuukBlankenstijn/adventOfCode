@@ -1,4 +1,4 @@
-package solutions
+package _024
 
 type Direction int
 
