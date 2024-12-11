@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-var stones []int
+var stones map[int]int
 
 func Day11() (int, int) {
 	start := time.Now()
@@ -22,7 +22,7 @@ func Day11() (int, int) {
 }
 
 func parseInputDay11() {
-	file, err := os.Open("input/2024/day11.test.txt")
+	file, err := os.Open("input/2024/day11.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -34,6 +34,7 @@ func parseInputDay11() {
 		}
 	}(file)
 
+	stones = make(map[int]int)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -43,7 +44,7 @@ func parseInputDay11() {
 			if err != nil {
 				log.Fatal(err)
 			}
-			stones = append(stones, intVal)
+			stones[intVal] += 1
 		}
 		println("")
 	}
@@ -55,16 +56,27 @@ func parseInputDay11() {
 }
 
 func solutionDay11() (int, int) {
-	for i := 0; i < 25; i++ {
-		var afterBlink []int
-		for _, stone := range stones {
-			afterBlink = append(afterBlink, GetNextStone(stone)...)
+	sumPart1 := 0
+	sumPart2 := 0
+	for i := 0; i < 75; i++ {
+		newMap := make(map[int]int)
+		for stone, count := range stones {
+			for _, newStone := range GetNextStone(stone) {
+				newMap[newStone] += count
+			}
 		}
-		stones = afterBlink
-		println(i, len(stones))
+		stones = newMap
+		if i == 24 {
+			for _, count := range stones {
+				sumPart1 += count
+			}
+		}
+	}
+	for _, count := range stones {
+		sumPart2 += count
 	}
 
-	return len(stones), 0
+	return sumPart1, sumPart2
 }
 
 func GetNextStone(stone int) []int {
@@ -83,12 +95,4 @@ func GetNextStone(stone int) []int {
 		newStone = []int{stone * 2024}
 	}
 	return newStone
-}
-
-func printStoneRow(stones []int) {
-	for _, stone := range stones {
-		print(stone)
-		print(" ")
-	}
-	println("")
 }
