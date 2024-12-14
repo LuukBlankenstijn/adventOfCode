@@ -45,3 +45,28 @@ func (s Set[T]) Items() []T {
 	}
 	return items
 }
+
+func (s Set[T]) Copy() Set[T] {
+	items := s.Items()
+	newSet := make(Set[T])
+	for _, item := range items {
+		newSet.Add(item)
+	}
+	return newSet
+}
+
+func (s Set[T]) difference(subtract Set[T]) Set[T] {
+	newSet := make(Set[T])
+	for _, item := range s.Items() {
+		if !subtract.Contains(item) {
+			newSet.Add(item)
+		}
+	}
+	return newSet
+}
+
+func (s Set[T]) Union(second Set[T]) {
+	for item := range second {
+		s.Add(item)
+	}
+}

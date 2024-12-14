@@ -13,12 +13,12 @@ type Point struct {
 	x int
 }
 
-func (p1 Point) add(p2 Point) Point {
-	return Point{p1.y + p2.y, p1.x + p2.x}
+func (p Point) add(p2 Point) Point {
+	return Point{p.y + p2.y, p.x + p2.x}
 }
 
-func (p1 Point) subtract(p2 Point) Point {
-	return Point{p1.y - p2.y, p1.x - p2.x}
+func (p Point) subtract(p2 Point) Point {
+	return Point{p.y - p2.y, p.x - p2.x}
 }
 
 var m [][]rune
