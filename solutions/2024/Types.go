@@ -9,6 +9,16 @@ const (
 	LEFT
 )
 
+var directions = []struct {
+	Delta     Point
+	Direction Direction
+}{
+	{Point{-1, 0}, UP},
+	{Point{0, 1}, RIGHT},
+	{Point{1, 0}, DOWN},
+	{Point{0, -1}, LEFT},
+}
+
 type State struct {
 	location  Location
 	direction Direction
@@ -69,4 +79,41 @@ func (s Set[T]) Union(second Set[T]) {
 	for item := range second {
 		s.Add(item)
 	}
+}
+
+type PriorityQueue []*Item
+
+type Item struct {
+	Point       Point
+	Direction   Direction
+	Predecessor *Item
+	Cost        int
+	Priority    int
+	Index       int
+}
+
+func (pq *PriorityQueue) Len() int { return len(*pq) }
+
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].Priority < pq[j].Priority
+}
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].Index = i
+	pq[j].Index = j
+}
+
+func (pq *PriorityQueue) Push(x interface{}) {
+	item := x.(*Item)
+	item.Index = len(*pq)
+	*pq = append(*pq, item)
+}
+
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	item := old[n-1]
+	item.Index = -1
+	*pq = old[0 : n-1]
+	return item
 }
