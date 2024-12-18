@@ -81,6 +81,12 @@ func (s Set[T]) Union(second Set[T]) {
 	}
 }
 
+func (s Set[T]) UnionArray(array []T) {
+	for _, item := range array {
+		s.Add(item)
+	}
+}
+
 type PriorityQueue []*Item
 
 type Item struct {
