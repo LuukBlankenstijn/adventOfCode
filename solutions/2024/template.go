@@ -1,7 +1,10 @@
 package _024
 
 import (
+	"bufio"
 	"fmt"
+	"log"
+	"os"
 	"time"
 )
 
@@ -15,7 +18,19 @@ func Dayn() (int, int) {
 }
 
 func parseInputDayn() {
+	file, err := os.Open("input/2024/dayn.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
 
+	defer func(file *os.File) {
+		err := file.Close()
+		if err != nil {
+			log.Fatalln(err)
+		}
+	}(file)
+
+	scanner := bufio.NewScanner(file)
 }
 
 func solutionDayn() (int, int) {
