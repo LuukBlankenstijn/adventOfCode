@@ -31,6 +31,9 @@ func parseInputDayn() {
 	}(file)
 
 	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+
+	}
 }
 
 func solutionDayn() (int, int) {
