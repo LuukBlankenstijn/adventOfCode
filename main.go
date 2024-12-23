@@ -23,9 +23,9 @@ func main() {
 	//println(_024.Day18())
 	//println(_024.Day19())
 	//println(_024.Day20())
-	println(_024.Day21())
+	//println(_024.Day21())
 	//println(_024.Day22())
-	//println(_024.Day23())
+	println(_024.Day23())
 	//println(_024.Day24())
 	//println(_024.Day25())
 }

@@ -77,10 +77,21 @@ func (s Set[T]) difference(subtract Set[T]) Set[T] {
 	return newSet
 }
 
-func (s Set[T]) Union(second Set[T]) {
+func (s Set[T]) Union(second Set[T]) Set[T] {
 	for item := range second {
 		s.Add(item)
 	}
+	return s
+}
+
+func (s Set[T]) Intersection(second Set[T]) Set[T] {
+	newSet := make(Set[T])
+	for item := range second {
+		if s.Contains(item) {
+			newSet.Add(item)
+		}
+	}
+	return newSet
 }
 
 func (s Set[T]) UnionArray(array []T) {
